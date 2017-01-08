@@ -1,0 +1,93 @@
+#rwc_features_realestate_metabox .inside {
+
+    padding: 0;
+    margin-top: 0;
+}
+
+.rwc-vertical-tabs {
+
+    /**
+     * Best way I can think of to reverse .inside...
+     */
+    margin: -6px -12px -12px -12px;
+}
+
+.rwc-vertical-tabs > ul {
+
+    margin: 0;
+    width: 15%;
+    display: inline-block;
+    vertical-align: top;
+    border-right: 1px dotted #ccc;
+}
+
+.rwc-vertical-tabs > ul li {
+
+    display: block;
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px dotted #ccc;
+}
+
+.rwc-vertical-tabs > ul li:last-child {
+
+    border-bottom: none;
+}
+
+.rwc-vertical-tabs > ul li a {
+
+    color: #333;
+    text-decoration: none;
+    display: block;
+    padding: 20px;
+    transition: background .5s;
+}
+
+.rwc-vertical-tabs > ul li a.selected {
+    background: #0073aa;
+    color: #fff;
+    font-weight: bold;
+}
+
+.rwc-vertical-tabs > div {
+    display: none;
+    box-sizing: border-box;
+    width: 84.5%;
+}
+
+.rwc-vertical-tabs > div.selected {
+
+    display: inline-block;
+}
+
+.rwc-vertical-tabs > div:first-child {
+    display: inline-block;
+}
+
+.rwc-vertical-tabs > div table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.rwc-vertical-tabs > div table tr {
+    background: #f8f8f8;
+}
+
+.rwc-vertical-tabs > div table tr:nth-child(even) {
+    background: #f0f0f0;
+}
+
+.rwc-vertical-tabs > div table tr td,
+.rwc-vertical-tabs > div table tr th {
+    margin: 0;
+    vertical-align: top;
+    padding: 12px;
+    border-bottom: 1px dotted #f0f0f0;
+}
+
+.rwc-vertical-tabs > div table tr td {
+    text-align: left;
+}
+
+.rwc-vertical-tabs > div table tr th {
+    text-align: right;
+}
