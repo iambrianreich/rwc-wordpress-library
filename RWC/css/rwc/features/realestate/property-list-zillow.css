@@ -1,0 +1,396 @@
+@media screen {
+    .zillow.property-list ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .zillow.property-list ul li {
+        position : relative;
+        width: 33.2%;
+        margin: 0;
+        padding: 10px;
+        box-sizing: border-box;
+
+        text-align: center;
+        color: #fff;
+        font-family: 'Metrophobic', 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        text-shadow: 2px 2px 2px rgba(0,0,0, .75);
+    }
+
+    .zillow.property-list ul li  img {
+        width: 100%;
+        height: auto;
+    }
+
+    .zillow.property-list ul li h3 {
+        color: #fff;
+    }
+
+    .zillow.property-list ul li .content {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        padding: 0 20px 20px 20px;
+        text-align: left;
+    }
+
+    .zillow.property-list ul li .image-count {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        color: #fff;
+        font-weight: 600;
+    }
+
+    .zillow.property-list ul li .content .property-type {
+        color: #fff;
+        text-transform: uppercase;
+        margin-bottom: .5em;
+    }
+
+    .zillow.property-list ul li .content .property-type:before {
+        content: '\00a0';
+        vertical-align: middle;
+        line-height: 1em;
+        width: .5em;
+        height: .5em;
+        margin-right: .5em;
+        display: inline-block;
+        border-radius: 50%;
+        background: #efbb20;
+        border: 2px solid #fff;
+    }
+
+    .zillow.property-list ul li .content .price {
+        font-size: 2em;
+        fot-weight: bolder;
+        vertical-align: top !important;
+    }
+
+    .zillow.property-list ul li .content .price,
+    .zillow.property-list ul li .content .bedrooms,
+    .zillow.property-list ul li .content .baths {
+        display: inline-block;
+        vertical-align: middle;
+        color: #fff !important;
+    }
+
+    .zillow.property-list ul li .content .bedrooms:before,
+    .zillow.property-list ul li .content .baths:before {
+        content: '\00a0';
+        vertical-align: middle;
+        line-height: 1em;
+        width: .5em;
+        height: .5em;
+        margin-right: .5em;
+        display: inline-block;
+        border-radius: 50%;
+        background: #fff;
+    }
+
+    .zillow.property-list ul li .content h3 {
+        font-size: 1em;
+    }
+
+    @media screen and (min-width: 751px) and (max-width: 1100px) {
+        .zillow.property-list ul { }
+
+        .zillow.property-list ul li {
+
+            width: 49.5%
+        }
+    }
+
+    @media screen and (max-width: 750px) {
+        .zillow.property-list ul {
+            display: block;
+        }
+
+        .zillow.property-list ul li {
+
+            width: 100%;
+        }
+    }
+
+    /**
+     * Rules for the Zillow Detail view.
+     */
+    .property.zillow-detail #google-map {
+        width: 0;
+        height: 0;
+    }
+     .property.zillow-detail .images {
+     	width: 100%;
+     	overflow: hidden;
+        position: relative;
+     }
+
+    .property.zillow-detail .images ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        width: 100000px;
+        z-index: 10;
+    }
+
+    .property.zillow-detail .images ul li:first-child {
+        width: 548px;
+        background-color: #eee;
+        height: 414px;
+        max-width: 550px;
+        margin-left: 0 !important;
+    }
+
+    .property.zillow-detail .images ul li {
+        margin: 0;
+        height: 208px;
+        width: 280px;
+        display: inline-block;
+        vertical-align: top;
+        position: relative;
+        padding: 0;
+        border: 1px solid white;
+    }
+
+    .property.zillow-detail .images ul li:nth-child(odd) {
+        vertical-align: bottom;
+        margin-left: -280px;
+    }
+
+    .property.zillow-detail .images .map { position: relative; }
+
+    .property.zillow-detail .images .map a {
+        position: absolute;
+        z-index: 100;
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .property.zillow-detail .images .map .map-container {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        z-index: 10;
+    }
+
+    .property.zillow-detail .images .navigation {
+        position: absolute;
+        width: 100%;
+        top: 50%;
+    }
+
+    .property.zillow-detail .images .navigation .next,
+    .property.zillow-detail .images .navigation .previous {
+        display: block;
+        position: absolute;
+        color: #fff;
+        background: rgba(0,0,0, .75);
+        font-weight: bold;
+        padding: 5px 25px;
+        box-sizing: border-box;
+        margin-top: -10px;
+        z-index: 100;
+        cursor: pointer;
+    }
+
+    .property.zillow-detail .images .navigation .next {
+        top: 50%;
+        right: 20px;
+    }
+
+    .property.zillow-detail .images .navigation .previous {
+        top: 50%;
+        left: 20px;
+    }
+
+    .property.zillow-detail .primary-details {
+        margin-top: 25px;
+        width: 60%;
+        position: relative;
+
+        color: #333;
+    }
+
+    .property.zillow-detail .primary-details .address {
+        margin-bottom: 25px;
+    }
+
+    .property.zillow-detail .primary-details .address [itemprop="streetAddress"] {
+        font-size: 2em;
+        line-height: 1.25em;
+        display: block;
+        font-weight: 100;
+    }
+    .property.zillow-detail .primary-details .address [itemprop="streetAddress"]:after {
+
+    }
+
+    .property.zillow-detail .primary-details .address [itemprop="addressLocality"]:after {
+        content: ', ';
+    }
+    .property.zillow-detail .primary-details .offer {
+        position: absolute;
+        top:  0;
+        right: 0;
+    }
+
+    .property.zillow-detail .primary-details .offer .offer-type {
+        text-transform: uppercase;
+        font-weight: bold;
+        display: block;
+    }
+
+    .property.zillow-detail .primary-details .offer .offer-type:before {
+        content: '\00a0';
+        font-size: 1em;
+        line-height: 1em;
+        background-color: #93f;
+        border-radius: 50%;
+        width: .75em;
+        height: .75em;
+        box-sizing: border-box;
+        margin-right: .5em;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .property.zillow-detail .primary-details .offer .rent,
+    .property.zillow-detail .primary-details .offer .price {
+        color: #333 !important;
+        font-size: 2em;
+    }
+
+    .property.zillow-detail .primary-details .summary-details {
+        font-weight: bold;
+    }
+
+    .property.zillow-detail .primary-details .description {
+        text-align: left;
+    }
+
+    .property.zillow-detail .primary-details .section {
+        margin: 25px 0;
+        border-top: 1px dotted #eee;
+    }
+
+    .property.zillow-detail .primary-details .section h3 {
+        margin: 15px 0 7px 0;
+    }
+
+    .property.zillow-detail .primary-details .horizontal-list {
+        list-style: none;
+        margin: 25px 0;
+        padding: 0;
+    }
+
+    .property.zillow-detail .primary-details .horizontal-list li {
+        display: inline-block;
+        margin-left: 0;
+        margin-right: 1em;
+    }
+
+    .property.zillow-detail .primary-details .horizontal-list li:before {
+        content: '\00a0';
+        font-size: 1em;
+        line-height: 1em;
+        background-color: #555;
+        border-radius: 50%;
+        width: .25em;
+        height: .25em;
+        box-sizing: border-box;
+        margin-right: .5em;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .property.zillow-detail .section.collapse > h3 {
+        position: relative;
+    }
+
+    .property.zillow-detail .section.collapse > h3:after {
+        position: absolute;
+        right: 0;
+        content: '>';
+        transform: rotate(90deg);
+    }
+
+
+    .property.zillow-detail .section.collapse.expanded > h3:after {
+        transform : rotate(-90deg);
+    }
+
+    .property.zillow-detail .section.collapse.expanded .content {
+        display: block;
+        padding: 0;
+    }
+
+    .property.zillow-detail .section.collapse .content {
+        display: none;
+    }
+
+    .property.zillow-detail #google-map {
+        width: 100%;
+        height: 600px;
+    }
+
+    .property.zillow-detail #contact-form {
+        position: absolute;
+        width: 34%;
+        right: 2%;
+        background: #eee;
+        padding: 20px;
+        box-sizing: border-box;
+        top: 380px;
+    }
+
+    .property.zillow-detail #agent-details,
+    .property.zillow-detail #office-details {
+        border-top: 1px dotted #ccc;
+        padding-top: 25px;
+    }
+
+    .property.zillow-detail #agent-details h3,
+    .property.zillow-detail #office-details h3, {
+        padding-bottom: 25px;
+    }
+
+    .property.zillow-detail #agent-details .agent-picture,
+    .property.zillow-detail #office-details .image {
+        text-align: center;
+        float: right;
+        padding: 0 0 10px 10px;
+    }
+
+    .property.zillow-detail #agent-details .agent-picture img,
+    .property.zillow-detail #office-details .image img {
+        max-width: 80px;
+        height: auto;
+    }
+
+    .property.zillow-detail #office-details .priceRange {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 959px ) {
+    .property.zillow-detail .primary-details {
+        width: 100%;
+    }
+
+    .property.zillow-detail #contact-form {
+        position: static;
+        width: 100%;
+
+    }
+
+    .property.zillow-detail .primary-details .offer {
+        position: static;
+        display: block;
+    }
+}
