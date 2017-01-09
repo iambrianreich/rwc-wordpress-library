@@ -32,6 +32,64 @@ namespace RWC {
         private $_register = true;
 
         /**
+         * The namespaces assigned to the
+         */
+        private $_namespaces = array();
+
+        /**
+         * Adds a namespace to the list of supported namespaces.
+         *
+         * @param string $namespace The namespace to add to the Autoloader.
+         */
+        public function add_namespace( $namespace ) {
+
+            // Only add it if it's not already registered.
+            if( ! in_array( $this->_namespaces ) ) {
+
+                $this->_namespaces[] = $namespace;
+            }
+        }
+
+        /**
+         * Returns the list of supported namespaced.
+         *
+         * @return array Returns the list of Autoloaded namespaces.
+         */
+        public function get_namespaces() {
+
+            return $this->_namespaces;
+        }
+
+        /**
+         * Sets the list of supported namespaces.
+         *
+         * Sets the list of supported namespaces. set_namespaces() is
+         * destructive. It will remove any namespaces that are already
+         * registered.
+         *
+         * @param array $namespaces The namespaces to set.
+         */
+        public function set_namespaces( $namespaces ) {
+
+            $this->_namespaces = [];
+            foreach( $namespaces as $namespace ) {
+                $this->add_namespace( $namespace );
+            }
+        }
+
+        /**
+         * Returns true if this Autoloader supports the specified namespace.
+         *
+         * @param string $namespace The namespace to check for support.
+         *
+         * @return bool Returns true if Autoloader supports the namespace.
+         */
+        public function is_namespace_supported( $namespace ) {
+
+            return in_array( $namespace, $this->get_namespaces() );
+        }
+
+        /**
          * Creates a new Autoloader.
          *
          * Creates a new Autoloader. The Autoloader supports the following
@@ -79,8 +137,11 @@ namespace RWC {
          */
         public function autoload($className)
         {
-            // Don't do anything if it's not one of our classes.
-            if( substr( $className, 0, 3) !== 'RWC' ) return;
+
+            // Don't do anything if it's not a supported namespace.
+            $namespace = explode( '\\', $className )[0];
+
+            if( ! $this->is_namespace_supported( $namespace ) ) return;
 
             // Don't do anything if class is already loaded.
             if( class_exists( $className ) ) {
@@ -95,10 +156,16 @@ namespace RWC {
                 $className = substr($className, $lastNsPos + 1);
                 $fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
             }
+
             $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
 
+            $success = include( $fileName  );
+
             // Verify that the file loads successfully.
-            require( $fileName  );
+            if( ! $success ) {
+
+                throw new \RWC\Exception( "Failed to autoload $filenae");
+            }
         }
     }
 }

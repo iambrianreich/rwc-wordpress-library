@@ -1,14 +1,40 @@
 <?php
 
+/**
+ * This file contains the RWC\Library class.
+ *
+ * @author Brian Reich <breich@reich-consulting.net>
+ * @copyright Copyright (C) 2017 Reich Web Consulting
+ * @package RWC\Library
+ */
+
 namespace RWC {
 
     /**
      * Load RWC\Exception
      */
     require_once( 'Exception.php' );
+
+    /**
+     * Load the Autoloader.
+     */
     require_once( 'Autoloader.php' );
+
+    /**
+     * Register the RWC\Object base class.
+     */
     require_once( 'Object.php' );
 
+    /**
+     * The Reich Web Consulting PHP Library provides simple wrappers on top of
+     * WordPress' basic constructs such as Custom Post Types and Metaboxes
+     * which makes building up custom features a matter of configuration versus
+     * writing a ton of boilerplate WordPress code.
+     *
+     * @author Brian Reich <breich@reich-consulting.net>
+     * @copyright Copyright (C) 2017 Reich Web Consulting
+     * @package RWC\Library
+     */
     class Library extends \RWC\Object {
 
         /**
@@ -23,7 +49,7 @@ namespace RWC {
          * The RWC\Autoloader instance used for automatic loading of classes
          * in the RWC namespace.
          *
-         * @var    \RWC\Autoloader
+         * @var   \RWC\Autoloader
          * @ccess private
          */
         private $_autoloader = null;
@@ -44,6 +70,14 @@ namespace RWC {
          * @access private
          */
         private $activation_file = null;
+
+        /**
+         * A list of default namespaces.
+         *
+         * @var    array
+         * @access private
+         */
+        private $default_namespaces = array( 'RWC' );
 
         /**
          * A list of features passed to the library.
@@ -80,6 +114,16 @@ namespace RWC {
         }
 
         /**
+         * Returns the Autoloader.
+         *
+         * @return \RWC\Autoloader Returns the Autoloader.
+         */
+        public function get_autoloader() {
+
+            return $this->_autoloader;
+        }
+
+        /**
          * Returns the default options for initializing RWC\Library.
          *
          * @return array Returns an array of default options.
@@ -91,7 +135,8 @@ namespace RWC {
                 'activation_file' => null,
                 'features' => array(),
                 'admin_page_title' => __( 'Reich Web Consulting Options', 'RWC_Library' ),
-                'admin_page_menu' => __( 'RWC Options', 'RWC_Library' )
+                'admin_page_menu' => __( 'RWC Options', 'RWC_Library' ),
+                'namespaces' => $this->default_namespaces
             );
         }
 
@@ -114,6 +159,9 @@ namespace RWC {
             $this->_autoloader = new Autoloader( array(
                 'register' => true
             ) );
+
+            // Set namespaces.
+            $this->set_namespaces( $options[ 'namespaces' ] );
 
             $this->set_uri( $options[ 'uri' ] );
             $this->set_activation_file( $options[ 'activation_file' ] );
@@ -211,9 +259,12 @@ namespace RWC {
         /**
          * Loads a Feature by class name.
          *
-         * Loads a Feature by class name. When the feature is loaded,
+         * Loads a feature by class name. The class name is checked against
+         * the registered namespace list. When the feature is loaded,
          * load_feature() first checks the Feature to see if it has any
-         * dependancies by calling it's
+         * dependancies. If the feature contains dependancies, they will be
+         * loaded first so they exist at the time the specified feature is
+         * initialized.
          *
          * @param string $feature The name of the Feature class name.
          *
@@ -231,10 +282,119 @@ namespace RWC {
             // Don't re-run if the feature is already leaded.
             if( isset( $this->_loaded_features[ $name ] ) ) return;
 
+            // Iterate through namespaces to load feature.
+            foreach( $this->get_option( 'namespaces' ) as $namespace ) {
+
+                // Load the feature from the current namespace.
+                $feature = $this->load_namespaced_feature(
+                    $namespace, $name, $options );
+
+                // If the feature was loaded successfully, store it.
+                if( $feature !== null ) {
+                    $this->_loaded_features[ $name ] = $feature;
+                }
+            }
+
+            // If feature could not be loaded from any namespace, throw
+            // an Exception.
+            if( ! isset( $this->_loaded_features[ $name ] ) ) {
+
+                throw new \Exception(
+                    "Failed to load RWS Library Feature $name.");
+            }
+        }
+
+        /**
+         * Sets the list of namespaces.
+         *
+         * Sets the list of supported class namespaces for the Reich Web
+         * Consulting library.  Adding a namespace will allow the library to
+         * work with classes in the client's namespace.
+         *
+         * set_namespaces() will clear the list of supported namespaces before
+         * setting the new list. If you need to add a namespace without clearing
+         * the existing list, use add_namespace().
+         *
+         * @param array $namespaces The list of namespaces to support.
+         */
+        public function set_namespaces( $namespaces = array() ) {
+
+            // Clear namespaces array by setting defaults.
+            $this->set_option( 'namespaces', $this->default_namespaces );
+
+            foreach( $namespaces as $namespace ) {
+                $this->add_namespace( $namespace );
+            }
+
+            $this->sync_autoloader_namespaces();
+        }
+
+        /**
+         * Returns the list of supported namespaces.
+         *
+         * @return array Returns the list of supported namespaces.
+         */
+        public function get_namespaces() {
+
+            return $this->get_option( 'namespaces' );
+        }
+
+        /**
+         * Adds a namespace.
+         *
+         * Adds a namespace to the list of supported class namespaces for the
+         * Reich Web Consulting library.  Adding a namespace will allow the
+         * library to work with classes in the client's namespace.
+         */
+        public function add_namespace( $namespace ) {
+
+            $namespaces = $this->get_namespaces();
+
+            if( ! in_array( $namespace, $namespaces ) ) {
+                $namespaces[] = $namespace;
+            }
+
+            $this->set_option( 'namespaces', $namespaces );
+
+            $this->sync_autoloader_namespaces();
+        }
+
+        /**
+         * Syncs the Library's registered namespaces with the autoloader's
+         * namespaces.
+         *
+         * @return void
+         */
+        private function sync_autoloader_namespaces() {
+
+            $this->get_autoloader()->set_namespaces( $this->get_namespaces() );
+        }
+        /**
+         * Loads a Feature class from a specific namespace.
+         *
+         * The full namespaced class which will be loaded will be of the format
+         * $namespace\Features\$name, where $namespace is the base namespace and
+         * $name is the name of the feature.
+         *
+         * @param string $namespace The base namespace.
+         * @param string $name      The name of the feature.
+         * @param array  $options   The array of configuration options.
+         *
+         * @return RWC\Feature|null Returns the Feature, or null if load failed.
+         */
+        private function load_namespaced_feature( $namespace, $name, $options = null ) {
+
             try {
                 $options      = \apply_filters(
                                 'rwc_feature_options', $options, $name );
-                $class        = "RWC\Features\\$name";
+                $class        = "$namespace\Features\\$name";
+
+                // Autoload will fail with an Exception, which prevents the
+                // class instantiation from failing with a Fatal Error if The
+                // class is not found.
+
+                $this->get_autoloader()->autoload( $class );
+
                 $feature      = new $class( $options, $this );
                 $dependancies = $feature->get_dependancies();
 
@@ -259,13 +419,11 @@ namespace RWC {
                 // Run the rwc_plugin_initialize_after action
                 \do_action( 'rwc_plugin_initialize_after', $feature, $options );
 
-                $this->_loaded_features[ $name ] = $feature;
+                return $feature;
 
             } catch( \Exception $e ) {
 
-                throw new \Exception(
-                    "Failed to load RWS Library Feature $name: "
-                        . $e->getMessage() );
+                return null;
             }
         }
 
