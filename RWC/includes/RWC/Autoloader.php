@@ -40,13 +40,14 @@ namespace RWC {
          * Adds a namespace to the list of supported namespaces.
          *
          * @param string $namespace The namespace to add to the Autoloader.
+         * @param string $path      The path to the namespace's classes.
          */
-        public function add_namespace( $namespace ) {
+        public function add_namespace( $namespace, $path ) {
 
             // Only add it if it's not already registered.
-            if( ! in_array( $this->_namespaces ) ) {
+            if( ! array_key_exists( $namespace, $this->_namespaces ) ) {
 
-                $this->_namespaces[] = $namespace;
+                $this->_namespaces[ $namespace ] = $path;
             }
         }
 
@@ -72,8 +73,8 @@ namespace RWC {
         public function set_namespaces( $namespaces ) {
 
             $this->_namespaces = [];
-            foreach( $namespaces as $namespace ) {
-                $this->add_namespace( $namespace );
+            foreach( $namespaces as $namespace => $path ) {
+                $this->add_namespace( $namespace, $path );
             }
         }
 
@@ -86,7 +87,7 @@ namespace RWC {
          */
         public function is_namespace_supported( $namespace ) {
 
-            return in_array( $namespace, $this->get_namespaces() );
+            return array_key_exists( $namespace, $this->get_namespaces() );
         }
 
         /**
@@ -143,6 +144,8 @@ namespace RWC {
 
             if( ! $this->is_namespace_supported( $namespace ) ) return;
 
+            $namespacePath = $this->get_namespaces()[ $namespace ];
+
             // Don't do anything if class is already loaded.
             if( class_exists( $className ) ) {
                 return;
@@ -159,12 +162,14 @@ namespace RWC {
 
             $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
 
-            $success = include( $fileName  );
+
+            // Include the file from the path registered with the namespace.
+            @$success = include( $namespacePath  .'/' .$fileName  );
 
             // Verify that the file loads successfully.
             if( ! $success ) {
 
-                throw new \RWC\Exception( "Failed to autoload $filenae");
+                throw new \RWC\Exception( "Failed to autoload $fileName");
             }
         }
     }

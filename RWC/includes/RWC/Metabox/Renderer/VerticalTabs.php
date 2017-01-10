@@ -40,8 +40,15 @@ namespace RWC\Metabox\Renderer {
         public function enqueue_scripts() {
 
             // Load Vertical Tabs
-            wp_enqueue_script( 'rwc-vertical-tabs-js' );
-            wp_enqueue_style( 'rwc-vertical-tabs-css' );
+            wp_enqueue_script(
+                'rwc-vertical-tabs-js',
+                $this->get_library()->get_uri() . 'js/vertical-tabs.js',
+                array( 'jquery' )
+            );
+
+            wp_enqueue_style(
+                'rwc-vertical-tabs-css',
+                $this->get_library()->get_uri() . 'css/vertical-tabs.css' );
         }
 
         /**

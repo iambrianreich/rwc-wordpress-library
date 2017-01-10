@@ -321,7 +321,10 @@ namespace RWC {
                 $class = '\RWC\Metabox\Renderer\\' .
                     \RWC\Strings::get_camel_case( $this->get_renderer() );
 
+                // Create Renderer, assign defaults.
                 $this->_renderer = new $class();
+                $this->_renderer->set_metabox( $this );
+                $this->_renderer->set_library( $this->get_library() );
 
             }
 

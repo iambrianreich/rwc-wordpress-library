@@ -22,6 +22,22 @@ namespace RWC\Metabox {
     abstract class Renderer extends \RWC\Object
     {
         /**
+         * The Library associated with the Renderer.
+         *
+         * @var    \RWC\Library
+         * @access private
+         */
+        private $_library;
+
+        /**
+         * The Metabox associated with the Render.
+         *
+         * @var    \RWC\Metabox
+         * @access private
+         */
+        private $_metabox;
+
+        /**
          * Initialize the renderer.
          *
          * Initialize the Renderer. The constructor will call the initialize()
@@ -46,6 +62,50 @@ namespace RWC\Metabox {
          * @return void
          */
         public function initialize() {}
+
+        /**
+         * Sets the Metabox associated with the Renderer.
+         *
+         * @param \RWC\Metabox $metabox The Metabox.
+         *
+         * @return void
+         */
+        public function set_metabox( \RWC\Metabox $metabox ) {
+
+            $this->_metabox = $metabox;
+        }
+
+        /**
+         * Returns the Metabox associated with the Renderer.
+         *
+         * @return \RWC\Metabox Returns the Metabox.
+         */
+        public function get_metabox() {
+
+            return $this->_metabox;
+        }
+
+        /**
+         * Sets the Library instance used by the Renderer.
+         *
+         * @param \RWC\library $library The Library.
+         *
+         * @return void
+         */
+        public function set_library( \RWC\Library $library ) {
+
+            $this->_library = $library;
+        }
+
+        /**
+         * Returns the Library instance used by the Renderer.
+         *
+         * @return \RWC\Library Returns the Library instance.
+         */
+        public function get_library() {
+
+            return $this->_library;
+        }
 
         /**
          * Renders the Metabox contents.

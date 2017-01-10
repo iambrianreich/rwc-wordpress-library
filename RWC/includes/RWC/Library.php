@@ -77,7 +77,7 @@ namespace RWC {
          * @var    array
          * @access private
          */
-        private $default_namespaces = array( 'RWC' );
+        private $default_namespaces = array();
 
         /**
          * A list of features passed to the library.
@@ -136,7 +136,7 @@ namespace RWC {
                 'features' => array(),
                 'admin_page_title' => __( 'Reich Web Consulting Options', 'RWC_Library' ),
                 'admin_page_menu' => __( 'RWC Options', 'RWC_Library' ),
-                'namespaces' => $this->default_namespaces
+                'namespaces' => array()
             );
         }
 
@@ -283,7 +283,7 @@ namespace RWC {
             if( isset( $this->_loaded_features[ $name ] ) ) return;
 
             // Iterate through namespaces to load feature.
-            foreach( $this->get_option( 'namespaces' ) as $namespace ) {
+            foreach( $this->get_option( 'namespaces' ) as $namespace => $path ) {
 
                 // Load the feature from the current namespace.
                 $feature = $this->load_namespaced_feature(
@@ -320,10 +320,12 @@ namespace RWC {
         public function set_namespaces( $namespaces = array() ) {
 
             // Clear namespaces array by setting defaults.
-            $this->set_option( 'namespaces', $this->default_namespaces );
+            $this->set_option( 'namespaces', array(
+                'RWC' => realpath( dirname( __FILE__ ) . '/..' )
+            ) );
 
-            foreach( $namespaces as $namespace ) {
-                $this->add_namespace( $namespace );
+            foreach( $namespaces as $namespace => $path) {
+                $this->add_namespace( $namespace, $path );
             }
 
             $this->sync_autoloader_namespaces();
@@ -345,13 +347,18 @@ namespace RWC {
          * Adds a namespace to the list of supported class namespaces for the
          * Reich Web Consulting library.  Adding a namespace will allow the
          * library to work with classes in the client's namespace.
+         *
+         * @param string $namespace The namespace to add.
+         * @param string $path      The path where namespace classes are located.
+         *
+         * @return void
          */
-        public function add_namespace( $namespace ) {
+        public function add_namespace( $namespace, $path ) {
 
             $namespaces = $this->get_namespaces();
 
-            if( ! in_array( $namespace, $namespaces ) ) {
-                $namespaces[] = $namespace;
+            if( ! array_key_exists( $namespace,  $namespaces ) ) {
+                $namespaces[ $namespace] = $path;
             }
 
             $this->set_option( 'namespaces', $namespaces );
