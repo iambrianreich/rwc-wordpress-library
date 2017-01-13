@@ -344,6 +344,21 @@ namespace RWC {
         }
 
         /**
+         * Returns the Metabox field with the specified name.
+         *
+         * Returns the Metabox\Field with the specified name. If the field has
+         * not been assigned to this Metabox, null will be returned.
+         *
+         * @return RWC\Metabox\Field|null Returns the Field, or null.
+         */
+        public function get_field( $name ) {
+
+            $fields = $this->get_fields();
+
+            return isset( $fields[ $name ] ) ? $fields[ $name ] : null;
+        }
+
+        /**
          * Initializes the fields option to an array of Field objects.
          *
          * @return void

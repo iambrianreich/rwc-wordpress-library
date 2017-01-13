@@ -50,6 +50,11 @@ namespace RWC\Metabox\Field {
 
         <?php }
 
+        /**
+         * Returns the default options for the Dropbox field type.
+         *
+         * @return array Returns an array of default options for a Dropbox.
+         */
         public function get_default_options() {
 
             return array(
@@ -61,6 +66,16 @@ namespace RWC\Metabox\Field {
                 'required' => false,
                 'dropdown' => false
             );
+        }
+
+        /**
+         * Returns an array of Dropdown options.
+         *
+         * @return array Returns an array of Dropdown options.
+         */
+        public function get_dropdown_options() {
+
+            return $this->get_option( 'options', array() );
         }
 
         /**
