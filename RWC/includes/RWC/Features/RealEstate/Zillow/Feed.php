@@ -24,26 +24,23 @@ namespace RWC\Features\RealEstate\Zillow {
          *
          * @return void
          */
-        private static function render_current( $query ) {
-
-            // 2016-12-19 : Don't feel Zillow properties that are rented.
-            global $property;
-            if( $property->get_status() == 'Rented') return;
-            ?>
-            <Listing>
-                <?php self::render_location( $query ); ?>
-                <?php self::render_listing_details( $query ); ?>
-                <?php self::render_rental_details( $query ); ?>
-                <?php self::render_basic_details( $query ); ?>
-                <?php self::render_pictures( $query ); ?>
-                <?php self::render_agent( $query ); ?>
-                <?php self::render_office( $query ); ?>
-                <?php self::render_open_houses( $query ); ?>
-                <?php self::render_neighborhood( $query ); ?>
-                <?php self::render_fees( $query ); ?>
-                <?php self::render_rich_details( $query ); ?>
-            </Listing>
-        <?php }
+         private static function render_current( $query ) { ?>
+                 <?php if ( self::get_meta( 'status' ) == 'For Rent' ) : ?>
+                 <Listing>
+                     <?php self::render_location( $query ); ?>
+                     <?php self::render_listing_details( $query ); ?>
+                     <?php self::render_rental_details( $query ); ?>
+                     <?php self::render_basic_details( $query ); ?>
+                     <?php self::render_pictures( $query ); ?>
+                     <?php self::render_agent( $query ); ?>
+                     <?php self::render_office( $query ); ?>
+                     <?php self::render_open_houses( $query ); ?>
+                     <?php self::render_neighborhood( $query ); ?>
+                     <?php self::render_fees( $query ); ?>
+                     <?php self::render_rich_details( $query ); ?>
+                 </Listing>
+             <?php endif; ?>
+         <?php }
 
         /**
          * Renders the Fees section.
