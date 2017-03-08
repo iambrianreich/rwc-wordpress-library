@@ -160,6 +160,11 @@ namespace RWC {
                 'register' => true
             ) );
 
+            // 2017-03-08: force existance of namespaces
+            if( ! isset( $options[ 'namespaces' ] ) ) {
+                $options[ 'namespaces' ] = array();
+            }
+            
             // Set namespaces.
             $this->set_namespaces( $options[ 'namespaces' ] );
 
