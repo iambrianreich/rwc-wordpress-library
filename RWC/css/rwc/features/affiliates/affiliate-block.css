@@ -1,0 +1,56 @@
+
+.affiliate-product {
+    float: right;
+    padding: 15px;
+    max-width: 50%;
+    background: rgba(255, 255, 255, .75);
+    border: 2px dotted rgba(255, 255, 255, .95);
+    border-radius: 3px;
+    margin: 0 0 20px 20px;
+    text-align: center;
+}
+
+.affiliate-product span[itemprop="name"] {
+    font-weight: bold;
+    display: block;
+    margin-bottom: .5em;
+}
+
+.affiliate-product date {
+    display:block;
+    font-size: .75em;
+    font-style: italic;
+    margin-bottom: 1em;
+}
+.affiliate-product .button {
+    display: block;
+    text-align: center;
+    margin-top: 25px;
+    font-weight: bold;
+}
+
+.affiliate-product .button .affiliate {
+    display: block;
+    font-size: .75em;
+    font-style: italic;
+    line-height: 1em;
+    opacity: .75;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media screen and (max-width: 1000px) {
+
+    .affiliate-product {
+        float: none;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+    }
+}
+
+.affiliate-product .button:hover .affiliate {
+    opacity: 1;
+}

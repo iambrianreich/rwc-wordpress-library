@@ -75,7 +75,7 @@ namespace RWC\Features {
               ga('send', 'pageview');
 
             </script>
-        <? }
+        <?php }
     }
 
 }

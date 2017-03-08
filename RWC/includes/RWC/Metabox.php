@@ -321,7 +321,10 @@ namespace RWC {
                 $class = '\RWC\Metabox\Renderer\\' .
                     \RWC\Strings::get_camel_case( $this->get_renderer() );
 
+                // Create Renderer, assign defaults.
                 $this->_renderer = new $class();
+                $this->_renderer->set_metabox( $this );
+                $this->_renderer->set_library( $this->get_library() );
 
             }
 
@@ -338,6 +341,21 @@ namespace RWC {
             $this->initialize_fields();
 
             return $this->_fields;
+        }
+
+        /**
+         * Returns the Metabox field with the specified name.
+         *
+         * Returns the Metabox\Field with the specified name. If the field has
+         * not been assigned to this Metabox, null will be returned.
+         *
+         * @return RWC\Metabox\Field|null Returns the Field, or null.
+         */
+        public function get_field( $name ) {
+
+            $fields = $this->get_fields();
+
+            return isset( $fields[ $name ] ) ? $fields[ $name ] : null;
         }
 
         /**
