@@ -40,9 +40,12 @@
             // Load the images into the DOM.
             var images = hidden.data('images');
             $.each(images, function(i, image) {
-                $('<div class="img-container" data-id="' + image.id +
-                    '"><img src="' + image.thumbnail +
-                    '"/><span class="remove">X</span></div>').insertBefore(btn);
+
+                if( image != null ) {
+                    $('<div class="img-container" data-id="' + image.id +
+                        '"><img src="' + image.thumbnail +
+                        '"/><span class="remove">X</span></div>').insertBefore(btn);
+                }
             });
 
             /**
@@ -140,6 +143,44 @@
 
                 file_frame.open();
             });
+
+            var container = $('.image-container', $(this));
+            container.sortable({
+
+                /**
+                 * Update the JSON list on sort.
+                 */
+                update : function(e, ui) {
+
+                    images = hidden.data( 'images' );
+
+                    var list = [];
+
+                    $('.img-container:has("img")', field).each(function(index, value) {
+
+                        var current = $(this);
+                        var currentId  = current.data('id');
+
+                        function isMatch(element) {
+                            return element.id == currentId;
+                        }
+                        list.push( images.find(isMatch) );
+                    });
+                    console.log(list);
+                    updateHidden(hidden, list);
+                },
+
+                /**
+                 * Prevent sorting of the add new image button.
+                 */
+                stop : function(e, ui ) {
+                    if($(ui.item).hasClass('add-new-image-btn')) {
+                        $(this).sortable( 'cancel');
+                    }
+                }
+            });
+
+            $('.image-container', $(this) ).disableSelection();
 
         }); // each
     }; // fn
