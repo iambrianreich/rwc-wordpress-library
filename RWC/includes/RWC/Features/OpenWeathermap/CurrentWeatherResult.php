@@ -274,7 +274,8 @@ namespace RWC\Features\OpenWeathermap {
          */
         public function setTimestamp( $timestamp ) {
 
-            $this->timestamp = $timstamp;
+            $this->timestamp = $this->offsetTimestampForWordPressTimezone(
+                $timstamp );
         }
 
         /**
@@ -294,7 +295,8 @@ namespace RWC\Features\OpenWeathermap {
          */
         public function setSunrise( $sunrise ) {
 
-            $this->sunrise = $sunrise;
+            $this->sunrise = $this->offsetTimestampForWordPressTimezone(
+                $sunrise );
         }
 
         /**
@@ -314,7 +316,8 @@ namespace RWC\Features\OpenWeathermap {
          */
         public function setSunset( $sunset ) {
 
-            $this->sunset = $sunset;
+            $this->sunset = $this->offsetTimestampForWordPressTimezone(
+                $sunset );
         }
 
         /**
@@ -377,8 +380,8 @@ namespace RWC\Features\OpenWeathermap {
                 $json->rain['3h'],
                 $json->snow['3h'],
                 $json->dt,
-                $json->sunrise,
-                $json->sunset
+                $json->sys->sunrise,
+                $json->sys->sunset
             );
         }
 
@@ -397,6 +400,25 @@ namespace RWC\Features\OpenWeathermap {
             $this->setTimestamp( $timestamp );
             $this->setSunrise( $sunrise );
             $this->setSunset( $sunset );
+        }
+
+        /**
+         * Converts the specified UTC timestamp into a timestamp for the
+         * timezone configured in WordPress.
+         *
+         * @param int $timestamp The UTC timestamp.
+         *
+         * @return int Returns the timestamp offset for the site's timezone.
+         */
+        private function offsetTimestampForWordPressTimezone( $timestamp )
+        {
+            // Get timezone offset in seconds for configured timezone.
+            $offset = timezone_offset_get(
+                new \DateTimezone( get_option('timezone_string') ),
+                new \DateTime( date("c", $timestamp ))
+            );
+
+            return $timestamp + $offset;
         }
     }
 }
