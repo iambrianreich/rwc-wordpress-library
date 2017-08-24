@@ -11,12 +11,12 @@
 namespace RWC\Metabox\Field {
 
     /**
-	 * The RWC\Metabox\Field\Date renders a date field in a metabox.
-	 *
-	 * @author Brian Reich <breich@reich-consulting.net>
-	 * @copyright Copyright (C) 2016 Reich Consulting
-	 * @package RWC\Metabox
-	 */
+     * The RWC\Metabox\Field\Date renders a date field in a metabox.
+     *
+     * @author Brian Reich <breich@reich-consulting.net>
+     * @copyright Copyright (C) 2016 Reich Consulting
+     * @package RWC\Metabox
+     */
     class Repeater extends \RWC\Metabox\Field
     {
         /**

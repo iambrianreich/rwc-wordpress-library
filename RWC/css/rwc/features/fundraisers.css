@@ -1,0 +1,21 @@
+/**
+ */
+
+#rwc-fundraiser-banner {
+
+    padding: 10px;
+    background: rgba( 0,0,0, .01 );
+    margin-bottom: 1em;
+}
+
+body.product-not-in-fundraiser form.cart .quantity,
+body.product-not-in-fundraiser form.cart button[type="submit"] {
+    display: none !important;
+}
+
+.message.product-not-in-fundraiser {
+
+    background: rgba( 255,0,0, .01 );
+    border: 1px solid rgba( 255,0,0, .05 );
+    padding: 10px;
+}

@@ -88,6 +88,9 @@ namespace RWC {
          * will be present in the returned array when overrides are not specified in the
          * $options array.
          *
+         * @param array $options The array of options.
+         * @param array $defaults The array of default options.
+         *
          * @return array Returns an array of merged options.
          */
         public static function get_options( array $options = array(),

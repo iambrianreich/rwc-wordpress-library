@@ -275,7 +275,7 @@ namespace RWC\Features\OpenWeathermap {
         public function setTimestamp( $timestamp ) {
 
             $this->timestamp = $this->offsetTimestampForWordPressTimezone(
-                $timstamp );
+                $timestamp );
         }
 
         /**
@@ -345,15 +345,16 @@ namespace RWC\Features\OpenWeathermap {
         /**
          * Creates a CurrentWeatherResult from a JSON object.
          *
-         * @param stdClass|string $json The JSON object or JSON string.
+         * @param stdClass|string $jsonInput The JSON object or JSON string.
          *
          * @return CurrentWeatherResult Returns the converted CurrentWeatherResult.
          */
-        public static function fromJson( $json ) {
+        public static function fromJson( $jsonInput ) {
 
             // If it was passed as a json string, make it an object.
-            if( is_string( $json ) ) {
-                $json = json_decode( $json );
+            if( is_string( $jsonInput ) ) {
+                $json = json_decode( $jsonInput );
+                $arr = json_decode( $jsonInput , true );
 
                 // Make sure the response was valid.
                 if( $json == null ) {
@@ -377,8 +378,8 @@ namespace RWC\Features\OpenWeathermap {
                 Main::fromJson( $json->main ),
                 Wind::fromJson( $json->wind ),
                 $json->clouds->all,
-                $json->rain['3h'],
-                $json->snow['3h'],
+                (isset( $arr[ 'rain' ] ) ? $arr[ 'rain' ][ '3h' ] : ''),
+                (isset( $arr[ 'snow' ] ) ? $arr[ 'snow' ][ '3h' ]  : ''),
                 $json->dt,
                 $json->sys->sunrise,
                 $json->sys->sunset
@@ -412,6 +413,8 @@ namespace RWC\Features\OpenWeathermap {
          */
         private function offsetTimestampForWordPressTimezone( $timestamp )
         {
+            return $timestamp;
+            
             // Get timezone offset in seconds for configured timezone.
             $offset = timezone_offset_get(
                 new \DateTimezone( get_option('timezone_string') ),

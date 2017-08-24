@@ -11,7 +11,7 @@
 namespace RWC {
 
     /**
-	 * RWC\Metabox is a special class for easily generating complex metaboxes
+     * RWC\Metabox is a special class for easily generating complex metaboxes
      * via configuration. The following configuration options are available.
      * The 'renderer' option specifies the display mode for the Metabox,
      * and can specify single, vertical-tabs, or horizontal-tabs. For more
@@ -32,12 +32,12 @@ namespace RWC {
      *     'title'        => 'My Sample Metabox',
      *     'post_types'   => 'post',
      *     'field_prefix' => 'my-sample-metabox'
-     )
-	 *
-	 * @author Brian Reich <breich@reich-consulting.net>
-	 * @copyright Copyright (C) 2016 Reich Consulting
-	 * @package FC_Client
-	 */
+     *
+     *
+     * @author Brian Reich <breich@reich-consulting.net>
+     * @copyright Copyright (C) 2016 Reich Consulting
+     * @package FC_Client
+     */
     class Metabox extends \RWC\Object
     {
         /**
@@ -148,8 +148,8 @@ namespace RWC {
                 $this->get_id(),
                 __( $this->get_title(), 'RWC_Metabox' ),
                 array( $this, 'render' ),
-				$this->get_post_types()
-			);
+                $this->get_post_types()
+            );
         }
 
         /**

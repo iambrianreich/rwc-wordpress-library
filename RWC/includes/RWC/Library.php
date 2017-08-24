@@ -172,9 +172,7 @@ namespace RWC {
             $this->set_activation_file( $options[ 'activation_file' ] );
             $this->set_features( $this->get_option( 'features', array() ) );
 
-            // Load default features
             $this->load_feature( 'DefaultShortcodes' );
-            
             foreach( $this->_features as $name => $params ) {
                 $this->load_feature( $name, $params );
             }
@@ -437,7 +435,6 @@ namespace RWC {
                 return $feature;
 
             } catch( \Exception $e ) {
-
                 return null;
             }
         }

@@ -225,7 +225,7 @@ namespace RWC\Features\OpenWeathermap {
             $this->setHumidity( $humidity );
             $this->setTemperatureMinimum( $temperatureMinimum );
             $this->setTemperatureMaximum( $temperatureMaximum );
-            $this->setAtmosphericTemperatureAtSeaLevel( $atmosphericPressureAtSeaLevel );
+            $this->setAtmosphericTemperatureAtSeaLevel( $atmosphericTemperatureAtSeaLevel );
             $this->setAtmosphericTemperatureAtGroundLevel( $atmosphericTemperatureAtGroundLevel );
         }
 
@@ -244,8 +244,8 @@ namespace RWC\Features\OpenWeathermap {
                 $json->humidity,
                 $json->temp_min,
                 $json->temp_max,
-                $json->sea_level,
-                $json->grnd_level
+                isset( $json->sea_level ) ? $json->sea_level : '',
+                isset( $json->grnd_level ) ? $json->grnd_level : ''
             );
         }
     }

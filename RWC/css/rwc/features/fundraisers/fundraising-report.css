@@ -1,0 +1,252 @@
+/**
+ * Stylesheets for Fundraising Report
+ *
+ * @author Brian Reich <breich@reich-consulting.net>
+ * @copyright Copyright (C) 2017 Reich Web Consulting https://www.reich-consulting.net/
+ */
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-weight: 300;
+  color: #333;
+}
+
+body.small-fonts {
+	font-size: 10pt;
+}
+
+body.small-fonts .order h3,
+body.small-fonts .order address,
+body.small-fonts .order table tr th,
+body.small-fonts .order table tr td,
+body.small-fonts footer h2 {
+	padding: 5px;
+}
+
+body.small-fonts .order table td.details .name,
+body.small-fonts .order table td.details dl dt {
+	font-weight: normal;
+}
+
+table {
+  width: 100%;
+}
+
+table tr th, table tr td {
+  text-align: left;
+  vertical-align: top;
+}
+
+table thead .fundraiser-info {
+  font-weight: normal;
+}
+
+header {
+  display: flex;
+  flex-flow: row;
+  margin-bottom: 25px;
+}
+
+.order address {
+	margin-bottom: 25px;
+}
+
+header .title {
+	width: 66.6666%;
+	vertical-align: top;
+}
+
+header .fundraiser-info {
+  width: 33.333330%;
+  vertical-align: top;
+  text-align: right;
+}
+
+header .fundraiser-info h2 {
+	margin-top: 0;
+	font-weight: normal;
+}
+
+.contact-info .city,
+.contact-info .state,
+.contact-info .zipcode,
+.order .billing-info .first-name,
+.order .billing-info .last-name,
+.order .billing-info .city,
+.order .billing-info .state,
+.order .billing-info .zipcode {
+
+  display: inline;
+}
+
+.fundraiser-info .contact-info .city:after,
+.order .customer-info .billing-info .city:after {
+  content: ',';
+}
+
+.order dl {
+	margin-bottom: 0;
+}
+
+.order dl dt,
+.order dl dd {
+	display: inline-block;
+	margin-left: 0;
+	padding-left: 0;
+}
+
+.order dl dt:after { content: ': '; }
+
+.order {
+	margin: 50px 0;
+
+}
+
+.order h3 {
+	font-weight: normal;
+  background: #13293D;
+  color: #fff;;
+  padding: 10px;
+  border: 1px solid #f0f0f0;
+  text-transform: uppercase;
+}
+
+.order address {
+	background: #fafafa;
+	padding: 10px;
+}
+
+.order table {
+	border: 1px solid #ccc;
+	background: #fff;
+	border-collapse: collapse;
+}
+
+.order table tr th {
+	  background: #f5f5f5;
+	  color: #13293D;
+}
+
+.order table tr th, .order table tr td {
+	  padding: 10px;
+	  border: 1px solid #eee;
+	  text-align: right;
+}
+
+.order table tr th.details,
+.order table tr td.details {
+	text-align: left;
+}
+
+.order table td.details .name {
+	font-weight: bold;
+	margin-bottom: 25px;
+	color: #13293D;
+}
+
+.order table td.details dl {
+	margin: 0 0 0 25px;
+}
+
+.order table td.details dl dt {
+	color: #13293D;
+	font-weight: bold;
+	display: inline-block;
+	min-width: 150px;
+}
+
+footer {
+	background: #fafafa;
+	margin: 50px 0;
+}
+
+footer h2 {
+	background: #13293D;
+	color: #fff;
+	text-align: center;
+	padding: 20px;
+	font-weight: normal;
+}
+
+footer > ul {
+	  list-style: none;
+	  margin: 0;
+}
+
+footer > ul > li {
+	text-align: center;
+	display: inline-block;
+	width: 25%;
+	vertical-align: top;
+	padding: 10px;
+	border: 1px solid #ccc;
+	box-sizing: border-box;
+}
+
+footer > ul > li .id:before {
+	content: '(#';
+}
+
+footer > ul > li .id:after {
+	content: ')';
+}
+
+footer > ul > li ul {
+	list-style: none;
+	margin: 0 0 10px 0;
+	padding: 0;
+}
+footer > ul > li .quantity {
+
+	display: inline-block;
+	padding: 5px 15px;
+	background: #13293D;
+	font-size: 2em;
+	color: #fff;
+	font-weight: bold;
+}
+
+@media screen {
+
+  body {
+	max-width: 1200px;
+	margin: 20px auto;
+  }
+}
+
+@media print {
+
+	body {
+		color: #000
+	}
+
+	.order h3 {
+	  background: transparent;
+	  color: #000;
+	  border: 1px solid: #aaa;
+	}
+
+	footer h2 {
+		background: transparent;
+  	  	color: #000;
+  	  	border: 1px solid: #aaa;
+	}
+
+	.order table {
+		background: transparent;
+  	  	border: 1px solid: #aaa;
+	}
+
+	.order table tr th {
+		background: transparent;
+		color: #000;
+		border: 1px solid: #aaa;
+	}
+
+	.order table tr th, .order table tr td {
+		background: transparent;
+  	  	color: #000;
+  	  	border: 1px solid: #aaa;
+	}
+
+}

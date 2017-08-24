@@ -11,12 +11,12 @@
 namespace RWC\Metabox\Field {
 
     /**
-	 * The RWC\Metabox\Field\Dropdown renders a Dropdown field in a metabox.
-	 *
-	 * @author Brian Reich <breich@reich-consulting.net>
-	 * @copyright Copyright (C) 2016 Reich Consulting
-	 * @package RWC\Metabox
-	 */
+     * The RWC\Metabox\Field\Dropdown renders a Dropdown field in a metabox.
+     *
+     * @author Brian Reich <breich@reich-consulting.net>
+     * @copyright Copyright (C) 2016 Reich Consulting
+     * @package RWC\Metabox
+     */
     class Text extends \RWC\Metabox\Field
     {
         /**
@@ -30,7 +30,10 @@ namespace RWC\Metabox\Field {
             <input type="text"
               name="<?php echo esc_attr( $this->get_id()); ?>"
               id="<?php echo esc_attr( $this->get_id()); ?>"
-              value="<?php echo esc_attr( $this->get_option( 'value', '' ) ); ?>" />
+              value="<?php echo esc_attr( $this->get_option( 'value', '' ) ); ?>"
+              <?php if( $this->get_option( 'placeholder' ) ) : ?>
+                  placeholder="<?php echo esc_attr( $this->get_option( 'placeholder' ) ); ?>"
+              <?php endif; ?> />
         <?php }
 
         /**

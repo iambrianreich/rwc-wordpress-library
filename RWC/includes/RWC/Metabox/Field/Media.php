@@ -37,7 +37,6 @@ namespace RWC\Metabox\Field {
                   </div>
             </div>
             <?php wp_enqueue_media(); ?>
-            <?php wp_enqueue_script( 'jquery-ui-sortable' ); ?>
             <?php wp_enqueue_script( 'rwc-metabox-field-media',
                 $this->get_metabox()->get_library()->get_uri() .
                     '/js/rwc/metabox/field/media.js', array( 'jquery' ) ); ?>

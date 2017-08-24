@@ -49,6 +49,14 @@ namespace RWC\Features {
         private $service = null;
 
         /**
+         * The current user's zipcode.
+         *
+         * @var    int
+         * @access private
+         */
+        private $userZipcode = null;
+
+        /**
          * Custom feature initialization.
          *
          * @constructor
@@ -59,7 +67,8 @@ namespace RWC\Features {
                 'apiKey' => null,
                 'cacheLifetime' => self::DEFAULT_CACHE_LIFETIME,
                 'enableCache' => true,
-                'units' => self::DEFAULT_UNITS
+                'units' => self::DEFAULT_UNITS,
+                'defaultZipcode' => null
             ) ), $library );
 
             // Load functions
@@ -79,9 +88,101 @@ namespace RWC\Features {
             add_shortcode( 'openweathermap_for_city', array( $this,
                 'render_openweathermap_for_city' ) );
 
+            add_shortcode( 'openweathermap_set_zipcode',
+                array( $this, 'render_openweathermap_set_zipcode' ) );
+
+            add_shortcode( 'openweathermap_zipcode', array( $this,
+                'render_openweathermap_zipcode' ) );
+
             wp_enqueue_style( 'openweathermap_icons',
                 $this->get_library()->get_uri() .
                 '/css/rwc/features/openweathermap/css/weather-icons.min.css' );
+
+            add_action( 'init', array( $this, 'save_zipcode' ) );
+        }
+
+        /**
+         * Renders the zipcode currently assigned to the OpenWeathermap
+         * feature.
+         *
+         * @return string Returns the zipcode.
+         */
+        public function render_openweathermap_zipcode() {
+
+            return $this->get_user_zipcode();
+        }
+
+        /**
+         * Saves the zipcode that should be used by default to lookup weather
+         * conditions for the user. The zipcode will be stored in a cookie for
+         * 120 days.
+         *
+         * @return void
+         */
+        public function save_zipcode()
+        {
+            // If submitted, set it.
+            if( isset( $_REQUEST[ 'openweathermap_zipcode' ] ) ) {
+                // Verify nonce
+                if( ! wp_verify_nonce( $_REQUEST[ 'openweathermap_set_zip' ], 'openweathermap_set_zip' ) ) return;
+
+
+
+                // Save it for 120 days.
+                $this->userZipcode = esc_html( $_REQUEST[ 'openweathermap_zipcode' ] );
+                setcookie( 'openweathermap_zipcode', $this->userZipcode,
+                    time() + (60 * 60 * 24 * 120), '/' );
+            }
+        }
+
+        /**
+         * Renders a form which allows the user to set their zipcode.
+         *
+         * @param array $atts An array of shortcode attributes.
+         *
+         * @return string Returns the HTML for the form.
+         */
+        public function render_openweathermap_set_zipcode( $atts )
+        {
+
+            ob_start(); ?>
+            <form method="POST" action="<?php $_SERVER['REQUEST_URI']; ?>">
+                <?php wp_nonce_field( 'openweathermap_set_zip', 'openweathermap_set_zip' ); ?>
+                <label for="openweathermap_zipcode">Zipcode:</label>
+                <input
+                    type="text"
+                    id="openweathermap_zipcode"
+                    name="openweathermap_zipcode"
+                    value="<?php echo esc_html( $this->get_user_zipcode() ); ?>" />
+                <input type="submit" name="openweathermap_zipcode_submit" value="Set Location"/>
+            </form>
+            <?php
+
+            $html = ob_get_contents();
+            ob_end_clean();
+
+            return $html;
+        }
+
+        /**
+         * Returns the zipcode that the user has set as their default.
+         *
+         * @return string|null Returns the user's zipcode.
+         */
+        public function get_user_zipcode() {
+
+            // If it's set locally, use it.
+            if( $this->userZipcode != null ) return $this->userZipcode;
+
+            // If the cookie is set, return it.
+            if( isset( $_COOKIE[ 'openweathermap_zipcode' ] ) )
+            {
+
+                return $_COOKIE[ 'openweathermap_zipcode' ];
+            }
+
+            // Otherwise, don't return anything.
+            return $this->get_option( 'defaultZipcode' );
         }
 
         /**
@@ -96,7 +197,7 @@ namespace RWC\Features {
 
             // Mixin defaults.
             $options = shortcode_atts(  array(
-                'zipcode' => null,
+                'zipcode' => $this->get_user_zipcode(),
                 'country' => 'us',
                 'view' => 'default'
             ), $options, 'openweathermap_for_zip' );
@@ -104,24 +205,30 @@ namespace RWC\Features {
             // Look for transient first
             $cacheId = 'render_openweathermap_for_zip_' .
                 http_build_query( $options, '', '_' );
+
             $cache = $this->getCache( $cacheId );
 
-            if( $cache != false ) return $cache;
 
-            // Get the service instance.
-            $service = $this->get_service();
+            try {
+                // Get the service instance.
+                $service = $this->get_service();
 
-            // This could throw an exception. Let's let WordPress handle it.
-            $options[ 'data' ] = $service->getCurrentWeatherByZipcode(
-                $options[ 'zipcode' ],
-                $options[ 'country' ]
-            );
+                // This could throw an exception. Let's let WordPress handle it.
+                $options[ 'data' ] = $service->getCurrentWeatherByZipcode(
+                    $options[ 'zipcode' ],
+                    $options[ 'country' ]
+                );
 
-            $result = (new OpenWeathermap\View())->render( $options );
+                $result = (new OpenWeathermap\View())->render( $options );
 
-            $this->setCache( $cacheId, $result );
+                $this->setCache( $cacheId, $result );
 
-            return $result;
+                return $result;
+            }
+            catch(OpenWeathermap\OpenWeathermapException $e )
+            {
+                return 'Weather not available';
+            }
         }
 
         /**

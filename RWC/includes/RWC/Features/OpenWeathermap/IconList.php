@@ -1,7 +1,31 @@
 <?php
 
+/**
+ * This file contains the RWC\Features\Openweathermap\IconList class.
+ *
+ * @author Brian Reich <breich@reich-consulting.net>
+ * @copyright Copyright (C) 2016 Reich Web Consulting
+ * @version 1.0
+ * @package RWC\Features
+ */
 namespace RWC\Features\OpenWeathermap {
 
+    /**
+     * IconList provides an easy way to map an OpenWeathermap weather condition
+     * code to a CSS icon class in the provided icon font.
+     *
+     * This class is taken from the GIST by user tbranyen at
+     * https://gist.github.com/tbranyen/62d974681dea8ee0caa1 and the icon font
+     * is a defunct Github project at https://github.com/erikflowers/weather-icons
+     * by Erik Flowers. All credit for mapping weather codes to CSS classes and
+     * for creation of the webfont pack go to these individuals. We just added
+     * this PHP wrapper to make the icon pack easy to use with our PHP Library.
+     *
+     * @author Brian Reich <breich@reich-consulting.net>
+     * @copyright Copyright (C) 2016 Reich Web Consulting
+     * @version 1.0
+     * @package RWC\Features
+     */
     class IconList {
 
         /**

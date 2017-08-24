@@ -1,0 +1,114 @@
+.rwc-metabox-field-fundraiser-products { min-width: 800px; }
+.rwc-metabox-field-fundraiser-products .container { }
+.rwc-metabox-field-fundraiser-products .container .product { }
+.rwc-metabox-field-fundraiser-products .container .product header {
+    position: relative;
+    background: #DCDCDD;
+    color: #46494C;
+    padding: 5px 20px;
+}
+
+.rwc-metabox-field-fundraiser-products .container .product header h3 {
+    color: #46494C;
+}
+
+.rwc-metabox-field-fundraiser-products .container .product header .enabled {
+    position: absolute;
+    right: 10px;
+    top: 22px;
+}
+
+.rwc-metabox-field-fundraiser-products .container .product .options {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height .5s, opacity .5s;
+}
+
+.rwc-metabox-field-fundraiser-products .container .product .options.enabled {
+    max-height: 99999px;
+    opacity: 1;
+}
+.rwc-metabox-field-fundraiser-products .container .product .options ul ul {
+    display: flex;
+    flex-flow: row;
+    flex-wrap: wrap;
+}
+
+.rwc-metabox-field-fundraiser-products .container .product .options ul ul > li {
+    box-sizing: border-box;
+    padding: 1px;
+    background: rgba(255, 255, 255, .8);
+    border: 1px solid rgba(0,0,0, .1);
+    min-width: 350px;
+    max-width: 400px;
+    margin: 5px;
+}
+
+.rwc-metabox-field-fundraiser-products .container .product .options ul ul > li h5 {
+    position: relative;
+    background: rgba(0,0,0, .05);
+    margin-top: 0;
+    padding: 5px 10px;
+}
+
+.rwc-metabox-field-fundraiser-products .container .product .options ul ul > li h5 input[type="checkbox"] {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+.rwc-metabox-field-fundraiser-products .container .product .options ul ul > li .container {
+    padding: 10px;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height .5s, opacity .5s;
+}
+
+.rwc-metabox-field-fundraiser-products .container .product .options ul ul > li .container.enabled {
+    opacity: 1;
+    max-height: 300px;
+}
+.rwc-metabox-field-fundraiser-products .container .product .options ul ul > li .container .inputContainer.checkbox label {
+    display: inline-block;
+    background: transparent;
+}
+.rwc-metabox-field-fundraiser-products .container .product .options ul ul > li .container .inputContainer.checkbox  input[type="checkbox"] {
+    display: inline-block;
+    width: auto;
+    border: none;
+}
+.rwc-metabox-field-fundraiser-products .container .product .options ul ul > li .container .inputContainer label {
+    display: block;
+    padding: 5px;
+    background: rgba(0,0,0, .025);
+    font-weight: bolder;
+    color: #4C5C68;
+}
+.rwc-metabox-field-fundraiser-products .container .product .options ul ul > li .container .inputContainer input {
+    display: block;
+    border: 1px solid rgba(0,0,0, .125);
+    width: 100%;
+}
+
+.rwc-metabox-field-fundraiser-products  .customizations table {
+    border: 1px solid rgba(0,0,0, .125);
+    margin-bottom: 25px;
+}
+
+.rwc-metabox-field-fundraiser-products  .customizations table tbody {
+    background: #fff;
+}
+
+.rwc-metabox-field-fundraiser-products  .customizations table th { }
+.rwc-metabox-field-fundraiser-products  .customizations table td,
+.rwc-metabox-field-fundraiser-products  .customizations table th {
+    text-align: left;
+    background: rgba(0,0,0, .05);
+    margin-top: 0;
+    padding: 5px 10px;
+}
+
+.rwc-metabox-field-fundraiser-products  .customizations table .template {
+    display: none;
+}
