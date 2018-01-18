@@ -23,7 +23,8 @@ $query = new \WP_Query( array(
         <div id="rwc-fundraiser-banner">
             You are currently shopping the
             <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-            fundraiser. Product options and pricing are fundraiser-specific.
+            fundraiser. Please complete your purchase for this fundraiser,
+			before switching to other fundraisers.
         </div>
     <?php endwhile; ?>
 <?php endif; ?>

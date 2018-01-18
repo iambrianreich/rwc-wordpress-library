@@ -93,6 +93,7 @@ function aggregate_item( $item, $fundraiser, & $aggregatePrice, & $aggregate )
 	  <div class="fundraiser-info">
 		<h2>Fundraising Report</h2>
 		<div class="contact-info">
+		  <div class="fundraiser-name" style="font-weight: bold;"><?php echo esc_html(get_the_title($fundraiser->get_fundraiser_id())); ?></div>
 		  <div class="business-name"><?php echo esc_html( $fundraiser->get_business_name() ); ?></div>
 		  <div class="customer-name"><?php echo esc_html( $fundraiser->get_customer_name() ); ?></div>
 		  <div class="address-1"><?php echo esc_html( $fundraiser->get_address1() ); ?></div>
@@ -105,6 +106,8 @@ function aggregate_item( $item, $fundraiser, & $aggregatePrice, & $aggregate )
 	</header>
 	<?php foreach( $orderIds as $orderId ) : ?>
 		<?php $order = wc_get_order( $orderId ); ?>
+		<?php if( $order->get_status() == 'cancelled' ) { continue; } ?>
+		
 		<section class="order">
 			<h3 class="order-no">Order #<?php echo esc_html( $order->get_order_number() ); ?></h3>
 			<address>
@@ -117,8 +120,18 @@ function aggregate_item( $item, $fundraiser, & $aggregatePrice, & $aggregate )
 				  <div class="city"><?php echo esc_html( $order->get_billing_city() ); ?></div>
 				  <div class="state"><?php echo esc_html( $order->get_billing_state() ); ?></div>
 				  <div class="zipcode"><?php echo esc_html( $order->get_billing_postcode() ); ?></div>
+				  
+				  <div class="email">
+				  	<span class="label">Email:</span>
+				  	<?php echo esc_html($order->get_billing_email()); ?>
+			  	  </div>
+				  <div class="phone">
+				  	<span class="label">Phone:</span>
+				  	<?php echo esc_html($order->get_billing_phone()); ?>
+				  </div>
 				</div>
 			</address>
+			<div class="payment-method"><strong>Payment Method:</strong> <?php echo esc_html(ucfirst($order->get_payment_method())); ?></div>
 			<table>
 			  <thead>
 				<tr>
@@ -129,9 +142,9 @@ function aggregate_item( $item, $fundraiser, & $aggregatePrice, & $aggregate )
 				</tr>
 			  </thead>
 			  <tbody>
-				  <tr class="order">
-					  <?php $items = $order->get_items(); ?>
-					  <?php foreach( $items as $item ) : ?>
+				  <?php $items = $order->get_items(); ?>
+				  <?php foreach( $items as $item ) : ?>
+					<tr class="order">
 						  <?php aggregate_item( $item, $fundraiser, $aggregatePrice, $aggregate ); ?>
 						  <?php $product = $item->get_product(); ?>
 						  <td class="details">
@@ -158,8 +171,8 @@ function aggregate_item( $item, $fundraiser, & $aggregatePrice, & $aggregate )
 						  <td class="price"><?php echo wc_price ( $item->get_total() / $item->get_quantity() ); ?></td>
 						  <td class="quantity"><?php echo esc_html( $item->get_quantity() ); ?></td>
 						  <td class="total"><?php echo wc_price( $item->get_total() ) ; ?></td>
-					  <?php endforeach; ?>
-				  </tr>
+					</tr>
+				  <?php endforeach; ?>
 			  </tbody>
 		  </table>
 		</section>

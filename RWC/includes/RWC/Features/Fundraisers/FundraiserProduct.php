@@ -268,6 +268,13 @@ class WC_Product_Fundraiser_Product extends WC_Product_Simple {
         $fundraisingProduct = $this->get_fundraiser()
             ->get_enabled_product( $this );
 
+		// The cart item is not in the fundraiser! Note that we're returning
+		// zero, but this shouldn't matter because all items will be removed
+		// from the cart when switching fundraisers.
+		if ($fundraisingProduct == null) {
+			return 0;
+		}
+		
         if( $fundraisingProduct->get_base_price() ) {
             $base = $fundraisingProduct->get_base_price();
         }

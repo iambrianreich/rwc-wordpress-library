@@ -17,7 +17,7 @@ namespace RWC\Features {
      * customer must choose a fundraiser before they are allowed to buy a
      * product.
      *
-     * @author Brian Reich <bre ich@reich-consulting.net>
+     * @author Brian Reich <breich@reich-consulting.net>
      * @copyright Copyright (C) 2016 Reich Web Consulting
      * @version 1.0
      * @package RWC\Features

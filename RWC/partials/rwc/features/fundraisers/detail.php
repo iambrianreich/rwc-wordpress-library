@@ -21,11 +21,12 @@
             <h2>Fundraiser Merchandise</h2>
             <?php $products = $fundraiser->get_products_query(); ?>
             <?php if( $products->have_posts() ) : ?>
-                <?php while( $products->have_posts() ) : $products->the_post(); ?>
-                    <ul class="products">
+                <ul class="products">
+					<?php while( $products->have_posts() ) : $products->the_post(); ?>
+                    
                         <?php wc_get_template_part( 'content', 'product' ); ?>
-                    </ul>
-                <?php endwhile; ?>
+					<?php endwhile; ?>
+				</ul>
             <?php else : ?>
                 <p>No merchandise has been assigned to this fundraiser.</p>
             <?php endif; ?>

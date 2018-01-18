@@ -43,6 +43,10 @@ namespace RWC\Features\Fundraisers {
 
             add_action( 'wp_ajax_rwc_fundraiser_report_csv',
                 array( $this, 'rwc_fundraiser_report_csv' ) );
+            
+            add_action('wp_ajax_rwc_fundraiser_customer_list', [ $this,
+            	'rwc_fundraiser_customer_list'
+            ]);
         }
 
         public function rwc_fundraiser_report_pdf()
@@ -67,6 +71,57 @@ namespace RWC\Features\Fundraisers {
             exit();
         }
 
+        /**
+         * Returns a CSV list of contact information for fundraiser customers.
+         * 
+         * When the request for the fundraiser customer list is made, the
+         * request must contain a request parameter called "fundraiser" which
+         * specifies the unique id of the fundraiser whose customer list is
+         * desired. The fundraiser value must map to an existing Fundraiser.
+         * 
+         * 
+         * @return void
+         */
+        public function rwc_fundraiser_customer_list()
+        {
+        	// Make sure required option was specified.
+        	if(! isset($_REQUEST['fundraiser']))
+        	{
+        		throw new Exception('Request parameter "fundraiser" not set.');
+        	}
+        	// Get the unique id of the fundraiser.
+        	$fundraiserId = intval( $_REQUEST[ 'fundraiser' ] );
+        	
+        	$feature = $this->get_fundraisers_feature();
+        	$fundraiser = $feature->get_fundraiser( $fundraiserId );
+        	
+        	// Make sure it exists.
+        	if(is_null($fundraiser))
+        	{
+        		throw new Exception($fundraiserId . 
+        			' is not a valid fundraiser.');
+        	}
+        	
+        	// Get a list of orders in the fundraiser.
+        	$orderIds = $fundraiser->get_order_ids();
+        	$library = $this->get_option( 'library' );
+        	
+        	// Output in CSV format.
+        	header('Content-type: text/csv');
+        	header('Content-Disposition: attachment; filename=fundraiser_' . 
+        		$fundraiserId . '_customers.csv');
+        	
+        	echo \RWC\Utility::get_include_content(
+        		'/features/fundraisers/customer-list.php', [
+        			'fundraiser' => $fundraiser,
+        			'cssDirectory' => $library->get_uri(),
+        			'feature'    => $feature,
+        			'orderIds'   => $orderIds,
+        			'library'    => $library
+        	] );
+        	
+        	exit();
+        }
         public function rwc_fundraiser_report_csv()
         {
             $fundraiserId = intval( $_REQUEST[ 'fundraiser' ] );
@@ -101,13 +156,14 @@ namespace RWC\Features\Fundraisers {
         public function render() {
 
             $base = 'ajaxurl + \'?action=rwc_fundraiser_report_%s&fundraiser=%s\'';
-            $csvUrl = sprintf( $base, 'csv', get_the_ID() );
+            $csvUrl = sprintf('ajaxurl + \'?action=rwc_fundraiser_customer_list&fundraiser=%s\'',get_the_ID() );
+            
             $pdfUrl = sprintf( $base, 'pdf', get_the_ID() ); ?>
                 <a class="button button-large button-secondary" href="#"
                     onclick="window.open(<?php echo $pdfUrl ; ?>); return false;">Download Report (PDF)</a>
 
                 <a class="button button-large button-secondary"
-                    href="#" onclick="window.open(<?php echo $csvUrl ; ?>)  ; return false">Download Report (CSV)</a>
+                    href="#" onclick="window.open(<?php echo $csvUrl ; ?>)  ; return false">Download Customer List (CSV)</a>
         <?php }
     }
 }

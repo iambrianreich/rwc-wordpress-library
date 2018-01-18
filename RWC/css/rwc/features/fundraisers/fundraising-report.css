@@ -78,6 +78,9 @@ header .fundraiser-info h2 {
 
   display: inline;
 }
+.order .billing-info .email {
+	margin-top: 1em;
+}
 
 .fundraiser-info .contact-info .city:after,
 .order .customer-info .billing-info .city:after {

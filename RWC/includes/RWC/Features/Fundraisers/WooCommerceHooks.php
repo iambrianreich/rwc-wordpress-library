@@ -400,6 +400,26 @@ namespace RWC\Features\Fundraisers {
             add_action( 'woocommerce_before_add_to_cart_quantity',
                 array( $this, 'render_add_to_cart_options' ) );
 
+			add_action( 'woocommerce_before_single_product', function() {
+				
+				global $product;
+
+				// Only render for Fundraiser Products
+				if( ! $product instanceof \WC_Product_Fundraiser_Product ) return;
+
+				$fundraiser = $this->get_feature()->get_user_fundraiser();
+				
+				$q = new \WP_Query( array(
+					'post_type' => \RWC\Features\Fundraisers::POST_TYPE,
+					'post__in' => [ $fundraiser ]
+				) ); ?>
+				<?php if( $q->have_posts() ) : ?>
+					<?php while( $q->have_posts() ) : $q->the_post(); ?>
+						<a id="rwc-fundraiser-link" href="<?php the_permalink(); ?>">&lt; Back to <?php the_title(); ?></a>
+					<?php endwhile; ?>
+				<?php endif; ?>
+				<?php wp_reset_postdata(); 
+			});
 			// Display the fundraiser banner above the add to cart stuff.
             add_action( 'woocommerce_before_add_to_cart_form',
                 array( $this, 'render_fundraiser_banner' ) );
